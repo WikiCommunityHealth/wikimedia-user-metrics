@@ -1,10 +1,11 @@
 import pymongo
+import time
 
 client = pymongo.MongoClient()
 eventUsersCollection = client.wikimedia_history_it.users
 usersCollection = client.wikimedia_user_metrics.users
 
-print('Getting sorted and projected users')
+print('Getting sorted and projected users', time.time())
 users = list(eventUsersCollection.aggregate([
     {
         '$sort': {
@@ -28,6 +29,6 @@ users = list(eventUsersCollection.aggregate([
     }
 ]))
 
-print('Inserting parsed users')
+print('Inserting parsed users', time.time())
 usersCollection.insert(users)
-print('Finished')
+print('Finished', time.time())
