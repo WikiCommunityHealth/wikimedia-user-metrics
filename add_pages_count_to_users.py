@@ -68,7 +68,7 @@ def add_month_revisions_events():
     for user in users:
         update_object = { 'events': { } }
         for month in months:
-            update_object['events'][f'{month[0][1]}/{month[0][0]}-{month[1][1]}/{month[1][0]}'] = { 'edits': n_revisions_by_user_and_month(user.get('id'), month) }
+            update_object['events']['{}/{}-{}/{}'.format(month[0][1], month[0][0], month[1][1], month[1][0])] = { 'edits': n_revisions_by_user_and_month(user.get('id'), month) }
         usersCollection.update_one({ 'id': user.get('id') }, { '$set': update_object })
     print('Added all revisions_events to users', time.time())
 
