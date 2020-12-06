@@ -15,7 +15,7 @@ def add_tot_pages_events():
     users = list(usersCollection.find({ "is_bot": False }).sort('id', pymongo.ASCENDING))
     print('Adding all pages_events to users', time.time())
     for user in users:
-        n_pages = list(eventPagesCollection.count({ 'event_user.id': user.get(id) }))
+        n_pages = eventPagesCollection.count({ 'event_user.id': user.get(id) })
         usersCollection.update_one({ 'id': user.get(id) }, { '$set': { 'pages_events': n_pages } })
     print('Added all pages_events to users', time.time())
 
