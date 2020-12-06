@@ -63,7 +63,7 @@ def months_range(start_month, start_year, end_month, end_year):
 def add_month_revisions_events():
     months = months_range(1, 2001, 12, 2020)
     print('Getting all non-bot users', time.time())
-    users = list(usersCollection.find({ "is_bot": False }).sort('id', pymongo.ASCENDING).limit(5))
+    users = list(usersCollection.find({ "is_bot": False }).sort('id', pymongo.ASCENDING))
     print('Adding all revisions_events to users', time.time())
     for user in users:
         update_object = { 'events': { } }
