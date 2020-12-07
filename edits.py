@@ -11,7 +11,7 @@ idsResult = list(usersCollection.aggregate([
         '$sort': { 'id': 1 }
     },
     {
-        '$limit': 100_000
+        '$limit': 100000
     },
     {
         '$match': {
