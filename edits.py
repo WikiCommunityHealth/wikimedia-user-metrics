@@ -1,20 +1,7 @@
 import pymongo
 import time
-from sshtunnel import SSHTunnelForwarder
 
-def get_mongo_client():
-    server = SSHTunnelForwarder(
-        ('192.168.184.92',22),
-        ssh_username='berretta',
-        ssh_password='Fuck,eugenio3361!?',
-        remote_bind_address=('127.0.0.1', 27017)
-    )
-
-    server.start()
-    client = pymongo.MongoClient(host='127.0.0.1', port=server.local_bind_port)
-    return client
-
-client = get_mongo_client()
+client = pymongo.MongoClient()
 eventRevisionsCollection = client.wikimedia_history_it.revisions
 usersCollection = client.wikimedia_user_metrics.users
 
