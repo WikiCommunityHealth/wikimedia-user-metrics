@@ -8,12 +8,6 @@ usersCollection = client.wikimedia_user_metrics.users
 print('Getting all non-bot users ids', time.time())
 idsResult = list(usersCollection.aggregate([
     {
-        '$sort': { 'id': 1 }
-    },
-    {
-        '$limit': 100
-    },
-    {
         '$match': {
             'is_bot': False
         }
