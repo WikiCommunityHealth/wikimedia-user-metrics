@@ -28,6 +28,7 @@ idsResult = list(usersCollection.aggregate([
     }
 ]))
 ids = idsResult[0]['ids']
+print(len(ids))
 print('Getted all non-bot users ids', time.time())
 
 print('Getting all data from revisions', time.time())
@@ -108,6 +109,7 @@ print('Converted all data to update queries', time.time())
 
 print('Converting all data to update queries bis', time.time())
 results = [pymongo.UpdateOne(r['f'], r['u']) for r in results]
+print(len(results))
 print('Converted all data to update queries bis', time.time())
 
 print('Updating all user documents', time.time())
