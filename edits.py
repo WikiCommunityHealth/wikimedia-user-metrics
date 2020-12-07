@@ -8,7 +8,7 @@ usersCollection = client.wikimedia_user_metrics.users
 PAGE_SIZE = 200000
 
 def add_edits():
-    print('Starting', time.time())
+    print('Starting add_edits', time.time())
     for i in range(0, 20):
         print('Getting all non-bot users ids', i, time.time())
         idsResult = list(usersCollection.aggregate([
@@ -35,7 +35,7 @@ def add_edits():
                 }
             }
         ]))
-        if (len(ids) < 1):
+        if (len(idsResult) < 1):
             break
         ids = idsResult[0]['ids']
         print('Getted ', len(ids), 'ids')
@@ -125,12 +125,12 @@ def add_edits():
         print('Updating all user documents', time.time())
         usersCollection.bulk_write(results)
         print('Updated all user documents', time.time())
-    print('Ending', time.time())
+    print('Ending add_edits', time.time())
 
 def add_empty_edits():
-    print('Starting', time.time())
+    print('Starting add_empty_edits', time.time())
     usersCollection.update_many({ 'is_bot': False }, { '$set': { 'edits': {} } })
-    print('End', time.time())
+    print('End add_empty_edits', time.time())
 
 add_empty_edits()
 add_edits()
