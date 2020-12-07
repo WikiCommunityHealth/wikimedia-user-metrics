@@ -8,10 +8,10 @@ usersCollection = client.wikimedia_user_metrics.users
 print('Getting all non-bot users ids', time.time())
 idsResult = list(usersCollection.aggregate([
     {
-        '$sort': 'id'
+        '$sort': { 'id': 1 }
     },
     {
-        'limit': 10
+        '$limit': 10
     },
     {
         '$match': {
@@ -104,7 +104,7 @@ print('Getted all data from revisions', time.time())
 
 print('Converting all data to update queries', time.time())
 for r in results:
-    r['updateOne']['update']['$set'] = r['updateOne']['update'].pop('$set')
+    r['updateOne']['update']['$set'] = r['updateOne']['update'].pop('set')
 print('Converted all data to update queries', time.time())
 
 print('Updating all user documents', time.time())
