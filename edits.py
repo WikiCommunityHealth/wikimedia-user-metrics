@@ -1,7 +1,20 @@
 import pymongo
 import time
+from sshtunnel import SSHTunnelForwarder
 
-client = pymongo.MongoClient()
+def get_mongo_client():
+    server = SSHTunnelForwarder(
+        ('192.168.184.92',22),
+        ssh_username='berretta',
+        ssh_password='Fuck,eugenio3361!?',
+        remote_bind_address=('127.0.0.1', 27017)
+    )
+
+    server.start()
+    client = pymongo.MongoClient(host='127.0.0.1', port=server.local_bind_port)
+    return client
+
+client = get_mongo_client()
 eventRevisionsCollection = client.wikimedia_history_it.revisions
 usersCollection = client.wikimedia_user_metrics.users
 
@@ -11,7 +24,7 @@ idsResult = list(usersCollection.aggregate([
         '$sort': { 'id': 1 }
     },
     {
-        '$limit': 10
+        '$limit': 100
     },
     {
         '$match': {
@@ -87,14 +100,13 @@ results = list(eventRevisionsCollection.aggregate([
         }
     }, {
         '$project': {
-            'updateOne': {
-                'filter': {
-                    'id': '$_id'
-                }, 
-                'update': {
-                    'set': {
-                        'edits': '$edits'
-                    }
+            '_id': False,
+            'f': {
+                'id': '$_id'
+            }, 
+            'u': {
+                'set': {
+                    'edits': '$edits'
                 }
             }
         }
@@ -104,13 +116,13 @@ print('Getted all data from revisions', time.time())
 
 print('Converting all data to update queries', time.time())
 for r in results:
-    r['updateOne']['update']['$set'] = r['updateOne']['update'].pop('set')
+    r['u']['$set'] = r['u'].pop('set')
 print('Converted all data to update queries', time.time())
 
+print('Converting all data to update queries bis', time.time())
+results = [pymongo.UpdateOne(r['f'], r['u']) for r in results]
+print('Converted all data to update queries bis', time.time())
+
 print('Updating all user documents', time.time())
-import json
-txt = json.dumps(results, indent=4)
-with open('f.json', 'w') as f:
-    f.write(txt)
 usersCollection.bulk_write(results)
 print('Updated all user documents', time.time())
