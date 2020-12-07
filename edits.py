@@ -132,5 +132,5 @@ def add_empty_edits():
     usersCollection.update_many({ 'is_bot': False }, { '$set': { 'edits': {} } })
     print('End', time.time())
 
-add_edits()
 add_empty_edits()
+add_edits()
