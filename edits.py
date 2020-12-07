@@ -108,5 +108,9 @@ for r in results:
 print('Converted all data to update queries', time.time())
 
 print('Updating all user documents', time.time())
+import json
+txt = json.dumps(results, indent=4)
+with open('f.json', 'w') as f:
+    f.write(txt)
 usersCollection.bulk_write(results)
 print('Updated all user documents', time.time())
