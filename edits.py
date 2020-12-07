@@ -6,8 +6,28 @@ eventRevisionsCollection = client.wikimedia_history_it.revisions
 usersCollection = client.wikimedia_user_metrics.users
 
 print('Getting all non-bot users ids', time.time())
-idsResult = list(usersCollection.find({ 'is_bot': False }, { '_id': None, 'id': True }))
-ids = [id.get('id') for id in idsResult]
+idsResult = list(usersCollection.aggregate([
+    {
+        '$sort': { 'id': 1 }
+    },
+    {
+        '$limit': 100_000
+    },
+    {
+        '$match': {
+            'is_bot': False
+        }
+    },
+    {
+        '$group': {
+            '_id': None,
+            'ids': {
+                '$push': '$id'
+            }
+        }
+    }
+]))
+ids = idsResult[0]['ids']
 print('Getted all non-bot users ids', time.time())
 
 print('Getting all data from revisions', time.time())
