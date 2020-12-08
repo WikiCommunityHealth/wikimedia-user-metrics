@@ -149,10 +149,10 @@ def add_page_events():
 def reset_page_events():
     print('Starting reset_page_events', time.time())
     usersCollection.update_many({ 'is_bot': False }, { '$set': { 
-        'events.create.months': {}, 
-        'events.move.months': {}, 
-        'events.delete.months': {}, 
-        'events.restore.months': {} 
+        'events.create': { 'months': {} }, 
+        'events.move': { 'months': {} }, 
+        'events.delete': { 'months': {} }, 
+        'events.restore': { 'months': {} }
     }})
     print('End reset_page_events', time.time())
 
