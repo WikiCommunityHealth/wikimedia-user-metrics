@@ -104,7 +104,7 @@ def add_edits():
                     }, 
                     'u': {
                         'set': {
-                            'edits': '$edits'
+                            'events': { 'edits': { 'monthly': '$edits' } }
                         }
                     }
                 }
