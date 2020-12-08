@@ -129,7 +129,7 @@ def add_edits():
 
 def add_empty_edits():
     print('Starting add_empty_edits', time.time())
-    usersCollection.update_many({ 'is_bot': False }, { '$set': { 'events.edits': {} } })
+    usersCollection.update_many({ 'is_bot': False, 'events.edits': { '$exists': False } }, { '$set': { 'events.edits': {} } })
     print('End add_empty_edits', time.time())
 
 add_empty_edits()
