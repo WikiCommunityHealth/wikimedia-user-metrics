@@ -5,6 +5,8 @@ client = pymongo.MongoClient()
 eventRevisionsCollection = client.wikimedia_history_it.revisions
 usersCollection = client.wikimedia_user_metrics.users
 
+print('Starting', time.time())
+
 print('Getting all non-bot users ids', time.time())
 idsResult = list(usersCollection.aggregate([
     {
@@ -14,6 +16,9 @@ idsResult = list(usersCollection.aggregate([
     },
     {
         '$sort': { 'id': 1 }
+    },
+    {
+        '$skip': 0
     },
     {
         '$limit': 100000
@@ -115,3 +120,5 @@ print('Converted all data to update queries bis', time.time())
 print('Updating all user documents', time.time())
 usersCollection.bulk_write(results)
 print('Updated all user documents', time.time())
+
+print('Ending', time.time())
