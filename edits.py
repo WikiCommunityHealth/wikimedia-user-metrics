@@ -104,7 +104,7 @@ def add_edits():
                     }, 
                     'u': {
                         'set': {
-                            'events': { 'edit': { 'monthly': '$edits' } }
+                            'events': { 'edit': { 'months': '$edits' } }
                         }
                     }
                 }
@@ -127,10 +127,10 @@ def add_edits():
         print('Updated all user documents', time.time())
     print('Ending add_edits', time.time())
 
-def add_empty_edits():
-    print('Starting add_empty_edits', time.time())
-    usersCollection.update_many({ 'is_bot': False, 'events.edit': { '$exists': False } }, { '$set': { 'events.edit': {} } })
-    print('End add_empty_edits', time.time())
+def reset_edits():
+    print('Starting reset_edits', time.time())
+    usersCollection.update_many({ 'is_bot': False }, { '$set': { 'events.edit': { 'months': {} } } })
+    print('End reset_edits', time.time())
 
+reset_edits()
 add_edits()
-add_empty_edits()
