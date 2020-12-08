@@ -119,7 +119,7 @@ def add_page_events():
             }, {
                 '$project': {
                     'f': {
-                        '_id': '$id'
+                        'id': '$id'
                     }, 
                     'u': {
                         'set': {
@@ -154,5 +154,5 @@ def add_empty_page_events():
     usersCollection.update_many({ 'is_bot': False, 'events.restore': { '$exists': False } }, { '$set': { 'events.restore': {} } })
     print('End add_empty_page_events', time.time())
 
-add_empty_page_events()
+#add_empty_page_events()
 add_page_events()
