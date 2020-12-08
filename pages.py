@@ -110,7 +110,7 @@ def add_page_events():
                         [
                             {
                                 '$concat': [
-                                    'events', '.', '$_id.type'
+                                    'events', '.', '$_id.type', '.', 'months'
                                 ]
                             }, '$events'
                         ]
@@ -146,13 +146,15 @@ def add_page_events():
         print('Updated all user documents', time.time())
     print('Ending add_page_events', time.time())
 
-def add_empty_page_events():
-    print('Starting add_empty_page_events', time.time())
-    usersCollection.update_many({ 'is_bot': False, 'events.create': { '$exists': False } }, { '$set': { 'events.create': {} } })
-    usersCollection.update_many({ 'is_bot': False, 'events.delete': { '$exists': False } }, { '$set': { 'events.delete': {} } })
-    usersCollection.update_many({ 'is_bot': False, 'events.move': { '$exists': False } }, { '$set': { 'events.move': {} } })
-    usersCollection.update_many({ 'is_bot': False, 'events.restore': { '$exists': False } }, { '$set': { 'events.restore': {} } })
-    print('End add_empty_page_events', time.time())
+def reset_page_events():
+    print('Starting reset_page_events', time.time())
+    usersCollection.update_many({ 'is_bot': False }, { '$set': { 
+        'events.create.months': {}, 
+        'events.move.months': {}, 
+        'events.delete.months': {}, 
+        'events.restore.months': {} 
+    }})
+    print('End reset_page_events', time.time())
 
-#add_empty_page_events()
+reset_page_events()
 add_page_events()
