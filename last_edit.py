@@ -6,7 +6,7 @@ usersCollection = client.wikimedia_user_metrics.users
 
 def add_last_edit():
     print('Starting add_last_edit', time.time())
-    print('Getted all non-bot users ids', time.time())
+    print('Getting all data from revisions', time.time())
     results = list(usersCollection.aggregate([
         {
             '$match': {
