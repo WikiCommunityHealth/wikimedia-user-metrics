@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import numpy as np
 
 TOT_USERS_NON_BOT = 2023922
 TOT_USERS_NO_EDIT = 1501542
@@ -16,5 +17,5 @@ data[0] = 10
 data[1] = 20
 data[2] = 30
 
-fig, ax = plt.subplots() 
-ax.plot(range(0, 300), data)
+plt.plot(list(range(0, 300)), data)
+plt.show()
