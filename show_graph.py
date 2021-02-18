@@ -3,10 +3,12 @@ import numpy as np
 import json
 
 TOT_USERS_NON_BOT = 2023922
-TOT_USERS_NO_EDIT = 1501542
+TOT_USERS_NO_EDIT = 1499720
 TOT_USERS_WITH_EDIT = TOT_USERS_NON_BOT - TOT_USERS_NO_EDIT
 
 CURRENT_MONTH = "2020/9"
+
+# ALMENO 10 EDIT ... 50
 
 def get_gap_in_months(last_month):
     current_year, current_month = [int(el) for el in CURRENT_MONTH.split('/')]
@@ -22,7 +24,8 @@ def get_months_data():
 obj = get_months_data()
 data = [0] * 300
 for (key, value) in obj.items():
-    data[get_gap_in_months(key)] = value
+    data[get_gap_in_months(key)] = (value / TOT_USERS_WITH_EDIT) * 100
+    # data[get_gap_in_months(key)] = value
 
 plt.plot(list(range(0, 300)), data)
 plt.show()
