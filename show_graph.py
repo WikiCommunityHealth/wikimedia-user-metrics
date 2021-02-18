@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import json
+import datetime
 
 TOT_USERS_NON_BOT = 2023922
 TOT_USERS_NO_EDIT = 1499720
@@ -8,7 +9,14 @@ TOT_USERS_WITH_EDIT = TOT_USERS_NON_BOT - TOT_USERS_NO_EDIT
 
 CURRENT_MONTH = "2020/9"
 
-# ALMENO 10 EDIT ... 50
+INPUT_FILE = 'last_edit_object_more_than_months_12.json'
+
+def get_months():
+    months = []
+    for year in range(2002, 2021):
+        for month in (range(1, 13) if year < 2020 else range(1, 10)):
+            months.append(datetime.datetime(year, month, 1))
+    return months
 
 def get_gap_in_months(last_month):
     current_year, current_month = [int(el) for el in CURRENT_MONTH.split('/')]
@@ -16,16 +24,20 @@ def get_gap_in_months(last_month):
     return (current_year - last_year) * 12 + (current_month - last_month)
 
 def get_months_data():
-    with open('last_edit_object.json') as file_in:
+    with open(INPUT_FILE) as file_in:
         data = file_in.read()
         obj = json.loads(data)
     return obj
 
 obj = get_months_data()
-data = [0] * 300
+months = get_months()
+data = [0] * len(months)
 for (key, value) in obj.items():
     data[get_gap_in_months(key)] = (value / TOT_USERS_WITH_EDIT) * 100
     # data[get_gap_in_months(key)] = value
 
-plt.plot(list(range(0, 300)), data)
+data
+months.reverse()
+
+plt.plot(months, data)
 plt.show()
