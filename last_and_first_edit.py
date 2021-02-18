@@ -59,7 +59,7 @@ def add_last_edit():
                     '$max': '$eventDates'
                 },
                 'firstMonth': {
-                    '$max': '$eventDates'
+                    '$min': '$eventDates'
                 }
             }
         }, {
