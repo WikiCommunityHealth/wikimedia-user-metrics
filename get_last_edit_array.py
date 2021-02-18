@@ -2,21 +2,7 @@ import pymongo
 import time
 import json
 
-from sshtunnel import SSHTunnelForwarder
-
-def get_mongo_client():
-    server = SSHTunnelForwarder(
-        ('192.168.184.92',22),
-        ssh_username='berretta',
-        ssh_password='Fuck,eugenio3361!?',
-        remote_bind_address=('127.0.0.1', 27017)
-    )
-
-    server.start()
-    client = pymongo.MongoClient(host='127.0.0.1', port=server.local_bind_port)
-    return client
-
-client = get_mongo_client()
+client = pymongo.MongoClient()
 usersCollection = client.wikimedia_user_metrics.users
 
 THRESHOLD = 10
@@ -59,11 +45,16 @@ def get_obj():
             }
         }
     ]))
-    print(f'Got parsed users {len(parsedUsers)}', time.time())
+
+    print('Got parsed users ' + str(len(parsedUsers)), time.time())
 
     print('Generating object', time.time())
     for parsedUser in parsedUsers:
-        obj[parsedUser['lastMonth']] += 1
+        month = parsedUser['lastMonth']
+        if month not in obj:
+            obj[month] = 0
+        else:
+            obj[month] += 1
     print('Generated object', time.time())
 
     print('Done get_obj', time.time())
@@ -73,5 +64,5 @@ def get_obj():
 obj = get_obj()
 text = json.dumps(obj)
 
-with open(f"last_edit_object_more_than_{THRESHOLD}.json", 'w') as outfile:
+with open("last_edit_object_more_than_" + THRESHOLD + ".json", 'w') as outfile:
     outfile.write(text)
