@@ -2,7 +2,8 @@ import pymongo
 import time
 import json
 
-usersCollection = pymongo.MongoClient()
+client = pymongo.MongoClient()
+usersCollection = client.wikimedia_user_metrics.users
 
 GAP = 3
 
