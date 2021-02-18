@@ -64,5 +64,5 @@ def get_obj():
 obj = get_obj()
 text = json.dumps(obj)
 
-with open("last_edit_object_more_than_" + THRESHOLD + ".json", 'w') as outfile:
+with open("last_edit_object_more_than_" + str(THRESHOLD) + ".json", 'w') as outfile:
     outfile.write(text)
