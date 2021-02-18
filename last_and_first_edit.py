@@ -57,6 +57,9 @@ def add_last_edit():
                 'id': True,
                 'lastMonth': {
                     '$max': '$eventDates'
+                },
+                'firstMonth': {
+                    '$max': '$eventDates'
                 }
             }
         }, {
@@ -67,7 +70,8 @@ def add_last_edit():
                 },
                 'u': {
                     'set': {
-                        'lastMonth': '$lastMonth'
+                        'lastMonth': '$lastMonth',
+                        'firstMonth': '$firstMonth'
                     }
                 }
             }
