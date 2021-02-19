@@ -8,7 +8,7 @@ usersCollection = client.wikimedia_user_metrics.users
 
 def get_months():
     months = []
-    for year in range(2002, 2021):
+    for year in range(2001, 2021):
         for month in (range(1, 13) if year < 2020 else range(1, 10)):
             months.append(str(year) + "/" + str(month))
     return months
@@ -70,7 +70,18 @@ def get_obj():
     return parsedMonths[0]['data']
 
 
+def accumulate(obj):
+    months = get_months()
+    for i in range(1, len(months)):
+        if months[i] in obj:
+            prev = obj[months[i - 1]] if months[i - 1] in obj else 0
+            obj[months[i]] = obj[months[i]] + prev
+    del obj['2020/10']
+    del obj['2020/11']
+    return obj
+
 obj = get_obj()
+obj = accumulate(obj)
 text = json.dumps(obj)
 
 with open("population_history.json", 'w') as outfile:

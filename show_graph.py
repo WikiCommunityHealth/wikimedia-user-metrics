@@ -9,7 +9,7 @@ TOT_USERS_WITH_EDIT = TOT_USERS_NON_BOT - TOT_USERS_NO_EDIT
 
 CURRENT_MONTH = "2020/9"
 
-INPUT_FILE = 'last_edit_object_more_than_months_12.json'
+INPUT_FILE = 'last_edit_object_more_than_10.json'
 
 def get_months():
     months = []
@@ -29,15 +29,24 @@ def get_months_data():
         obj = json.loads(data)
     return obj
 
+def get_population_data():
+    with open('population_history.json') as file_in:
+        data = file_in.read()
+        obj = json.loads(data)
+    return obj
+
 obj = get_months_data()
+population = get_population_data()
 months = get_months()
 data = [0] * len(months)
 for (key, value) in obj.items():
-    data[get_gap_in_months(key)] = (value / TOT_USERS_WITH_EDIT) * 100
+    data[get_gap_in_months(key)] = (value / population[key] if key in population else 1) * 100
+    # data[get_gap_in_months(key)] = (value / TOT_USERS_WITH_EDIT) * 100
     # data[get_gap_in_months(key)] = value
 
+months = months[20:]
 months.reverse()
 
-plt.plot(months, data)
+plt.plot(months, data[20:])
 
 plt.show()
