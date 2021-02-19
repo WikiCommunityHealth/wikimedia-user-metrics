@@ -36,8 +36,8 @@ for (key, value) in obj.items():
     data[get_gap_in_months(key)] = (value / TOT_USERS_WITH_EDIT) * 100
     # data[get_gap_in_months(key)] = value
 
-data
 months.reverse()
 
 plt.plot(months, data)
+
 plt.show()
